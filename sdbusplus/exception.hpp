@@ -26,29 +26,18 @@ struct internal_exception : public exception
 struct InvalidEnumString final : public internal_exception
 {
     static constexpr auto errName =
-        "org.openbmc_project.sdbusplus.Error.InvalidEnumString";
+        "xyz.openbmc_project.sdbusplus.Error.InvalidEnumString";
     static constexpr auto errDesc =
         "An enumeration mapping was attempted for which no valid enumeration "
         "value exists.";
     static constexpr auto errWhat =
-        "org.openbmc_project.sdbusplus.Error.InvalidEnumString: "
+        "xyz.openbmc_project.sdbusplus.Error.InvalidEnumString: "
         "An enumeration mapping was attempted for which no valid enumeration "
         "value exists.";
 
-    const char* name() const noexcept override
-    {
-        return errName;
-    }
-
-    const char* description() const noexcept override
-    {
-        return errDesc;
-    }
-
-    const char* what() const noexcept override
-    {
-        return errWhat;
-    }
+    const char* name() const noexcept override;
+    const char* description() const noexcept override;
+    const char* what() const noexcept override;
 };
 
 } // namespace exception
