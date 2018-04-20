@@ -16,8 +16,8 @@ nobase_include_HEADERS = \
 	sdbusplus/server/interface.hpp \
 	sdbusplus/server/manager.hpp \
 	sdbusplus/server/object.hpp \
-	sdbusplus/server/transaction.hpp \
 	sdbusplus/slot.hpp \
+	sdbusplus/utility/container_traits.hpp \
 	sdbusplus/utility/tuple_to_array.hpp \
 	sdbusplus/utility/type_traits.hpp \
 	sdbusplus/vtable.hpp
@@ -26,6 +26,8 @@ LIBSDBUSPLUS_FILES = \
 	sdbusplus/exception.cpp
 
 if WANT_TRANSACTION
+nobase_include_HEADERS += \
+	sdbusplus/server/transaction.hpp
 LIBSDBUPLUS_FILES_TRANSACTION = \
 	sdbusplus/server/transaction.cpp
 endif

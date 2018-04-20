@@ -25,20 +25,20 @@ namespace interface
  *  implementation of a class representing a dbus interface, which will be
  *  composed through multiple-inheritence to create a single dbus 'object'.
  *  Marking it 'final' prevents users from using an 'is-a' relationship via
- *  inheritence, which might be a natural option.  Instead, a dbus interface
+ *  inheritance, which might be a natural option.  Instead, a dbus interface
  *  implementation should 'has-a' server::interface with a name sufficiently
  *  unique to prevent name collisions in multiple-inheritence situations.
  */
 struct interface final
 {
-        /* Define all of the basic class operations:
-         *     Not allowed:
-         *         - Default constructor to avoid nullptrs.
-         *         - Copy operations due to internal unique_ptr.
-         *     Allowed:
-         *         - Move operations.
-         *         - Destructor.
-         */
+    /* Define all of the basic class operations:
+     *     Not allowed:
+     *         - Default constructor to avoid nullptrs.
+     *         - Copy operations due to internal unique_ptr.
+     *     Allowed:
+     *         - Move operations.
+     *         - Destructor.
+     */
     interface() = delete;
     interface(const interface&) = delete;
     interface& operator=(const interface&) = delete;
@@ -55,20 +55,16 @@ struct interface final
      *  @param[in] context - User-defined context, which is often 'this' from
      *                       the interface implementation class.
      */
-    interface(sdbusplus::bus::bus& bus,
-              const char* path,
-              const char* interf,
-              const sdbusplus::vtable::vtable_t* vtable,
-              void* context) :
-        _bus(bus.get()), _path(path), _interf(interf),
-        _slot(nullptr)
+    interface(sdbusplus::bus::bus& bus, const char* path, const char* interf,
+              const sdbusplus::vtable::vtable_t* vtable, void* context) :
+        _bus(bus.get()),
+        _path(path), _interf(interf), _slot(nullptr)
     {
         sd_bus_slot* slot = nullptr;
         sd_bus_add_object_vtable(_bus.get(), &slot, _path.c_str(),
                                  _interf.c_str(), vtable, context);
 
         _slot = decltype(_slot){slot};
-
     }
 
     /** @brief Create a new signal message.
@@ -90,14 +86,20 @@ struct interface final
                                        _interf.c_str(), property, nullptr);
     }
 
-    bus::bus& bus() { return _bus; }
-    const std::string& path() { return _path; }
+    bus::bus& bus()
+    {
+        return _bus;
+    }
+    const std::string& path()
+    {
+        return _path;
+    }
 
-    private:
-        bus::bus _bus;
-        std::string _path;
-        std::string _interf;
-        slot::slot _slot;
+  private:
+    bus::bus _bus;
+    std::string _path;
+    std::string _interf;
+    slot::slot _slot;
 };
 
 } // namespace interface
